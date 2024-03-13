@@ -1,0 +1,23 @@
+name: 'Configure Nix'
+description: 'Configures Nix on GitHub Actions for the supported platforms: Linux and macOS.'
+author: 'Brian McGee'
+inputs:
+  extra_nix_config:
+    description: 'Gets appended to `$HOME/.config/nix/nix.conf` if passed.'
+  github_access_token:
+    description: 'Configure nix to pull from github using the given github token.'
+  nix_path:
+    description: 'Set NIX_PATH environment variable.'
+branding:
+  color: 'blue'
+  icon: 'sun'
+runs:
+  using: 'composite'
+  steps:
+    - run : ${GITHUB_ACTION_PATH}/configure-nix.sh
+      shell: bash
+      env:
+        INPUT_EXTRA_NIX_CONFIG: ${{ inputs.extra_nix_config }}
+        INPUT_GITHUB_ACCESS_TOKEN: ${{ inputs.github_access_token }}
+        INPUT_NIX_PATH: ${{ inputs.nix_path }}
+        GITHUB_TOKEN: ${{ github.token }}
