@@ -67,4 +67,4 @@ jobs:
         with:
           github_access_token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
       - run: nix flake show github:numtide/treefmt
-      - run: nix flake show github:numtide/private-test-flake
+      - run: nix run github:numtide/private-test-flake
