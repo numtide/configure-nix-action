@@ -18,11 +18,6 @@ add_config() {
   echo "$1" >> "$workdir/nix.conf"
 }
 
-# Configure netrc
-add_netrc() {
-  echo "$1" >> "$workdir/netrc"
-}
-
 add_config "show-trace = true"
 
 # TODO review darwin support
@@ -36,14 +31,12 @@ add_config "show-trace = true"
 if [[ -n "${INPUT_GITHUB_ACCESS_TOKEN:-}" ]]; then
   echo "::debug::Using the provided github_access_token for github.com"
   add_config "access-tokens = github.com=$INPUT_GITHUB_ACCESS_TOKEN"
-  add_netrc "machine github.com password $INPUT_GITHUB_ACCESS_TOKEN"
 
 # Use the default GitHub token if available.
 # Skip this step if running an Enterprise instance. The default token there does not work for github.com.
 elif [[ -n "${GITHUB_TOKEN:-}" && $GITHUB_SERVER_URL == "https://github.com" ]]; then
   echo "::debug::Using the default GITHUB_TOKEN for github.com"
   add_config "access-tokens = github.com=$GITHUB_TOKEN"
-  add_netrc "machine github.com password $GITHUB_TOKEN"
 else
   echo "::debug::Continuing without a GitHub access token"
 fi
@@ -62,7 +55,6 @@ nix_conf_dir="$HOME/.config/nix"
 mkdir -p "$nix_conf_dir"
 
 mv "$workdir/nix.conf" "$nix_conf_dir/nix.conf"
-mv "$workdir/netrc" "$nix_conf_dir/netrc"
 
 # Set path
 if [[ -n "${INPUT_NIX_PATH:-}" ]]; then
