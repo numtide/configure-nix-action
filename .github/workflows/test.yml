@@ -64,5 +64,7 @@ jobs:
       - uses: cachix/install-nix-action@v26
       - name: Configure Nix
         uses: ./
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
       - run: nix flake show github:numtide/treefmt
       - run: nix flake show github:numtide/private-test-flake
