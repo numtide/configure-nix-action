@@ -64,5 +64,5 @@ jobs:
       - uses: cachix/install-nix-action@v26
       - name: Configure Nix
         uses: ./
-      - run: nix flake show github:NixOS/nixpkgs
+      - run: nix flake show github:numtide/treefmt
       - run: nix flake show github:numtide/private-test-flake
