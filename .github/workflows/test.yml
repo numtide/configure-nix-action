@@ -58,6 +58,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      HAS_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
@@ -66,4 +68,6 @@ jobs:
         with:
           github_access_token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
       - run: nix flake show github:numtide/treefmt
-      - run: nix run github:numtide/private-test-flake
+      # dependabot and fork PRs get no repository secrets
+      - if: env.HAS_TOKEN == 'true'
+        run: nix run github:numtide/private-test-flake
